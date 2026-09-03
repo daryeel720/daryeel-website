@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  --raw-navy: #14366b;
+  --raw-navy-dark: #0c2245;
+  --raw-blue: #2657a1;
+  --raw-forest: #2e7d32;
+  --raw-forest-dark: #205424;
+  --raw-gold: #e6a419;
+  --raw-maple: #cf2027;
+  --raw-maple-dark: #a4171d;
+  --raw-paper: #f5f6f1;
+  --raw-paper-warm: #efece2;
+  --raw-ink: #17211c;
+  --raw-font-display: "Lora", ui-serif, Georgia, "Times New Roman", serif;
+  --raw-font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+}
+
+@theme inline {
+  --color-navy: var(--raw-navy);
+  --color-navy-dark: var(--raw-navy-dark);
+  --color-blue: var(--raw-blue);
+  --color-forest: var(--raw-forest);
+  --color-forest-dark: var(--raw-forest-dark);
+  --color-gold: var(--raw-gold);
+  --color-maple: var(--raw-maple);
+  --color-maple-dark: var(--raw-maple-dark);
+  --color-paper: var(--raw-paper);
+  --color-paper-warm: var(--raw-paper-warm);
+  --color-ink: var(--raw-ink);
+  --font-display: var(--raw-font-display);
+  --font-body: var(--raw-font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 19px;
+}
+
+body {
+  background: #ffffff;
+  color: var(--raw-ink);
+  font-family: var(--raw-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--raw-font-display);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--raw-gold);
+  outline-offset: 2px;
+}
