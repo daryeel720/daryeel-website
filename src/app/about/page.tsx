@@ -92,30 +92,33 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="rounded-xl bg-forest-dark p-6 text-white">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <div className="mt-14 flex flex-col gap-6">
+          <div className="animate-fade-in-up rounded-xl bg-forest-dark p-8 text-white">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-icon-pulse">
               <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8.9.8 1.5v.1h5.4v-.1c0-.6.3-1.1.8-1.5A6 6 0 0 0 12 3Z" stroke="#ffffffdd" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <h2 className="mt-2 font-display text-lg font-semibold">
+            <h2 className="animate-text-shimmer mt-3 font-display text-3xl font-semibold md:text-4xl">
               Vision
             </h2>
-            <p className="mt-1.5 text-sm text-white/80">
+            <p className="mt-3 max-w-[80ch] text-xl text-white/85">
               Empowered, connected, and inclusive communities where
               everyone has the opportunity to belong, thrive, and
               contribute through equity, compassion, and collaboration.
             </p>
           </div>
-          <div className="rounded-xl bg-navy p-6 text-white">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <div
+            className="animate-fade-in-up rounded-xl bg-navy p-8 text-white"
+            style={{ animationDelay: "150ms" }}
+          >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-icon-pulse">
               <circle cx="12" cy="12" r="8" stroke="#ffffffdd" strokeWidth="1.6" />
               <circle cx="12" cy="12" r="3.2" stroke="#ffffffdd" strokeWidth="1.6" />
               <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#ffffffdd" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
-            <h2 className="mt-2 font-display text-lg font-semibold">
+            <h2 className="animate-text-shimmer mt-3 font-display text-3xl font-semibold md:text-4xl">
               Mission
             </h2>
-            <p className="mt-1.5 text-sm text-white/80">
+            <p className="mt-3 max-w-[80ch] text-xl text-white/85">
               Daryeel Community &amp; Senior Centre is committed to
               empowering seniors, youth, families, newcomers, and other
               vulnerable communities through inclusive programs, advocacy,

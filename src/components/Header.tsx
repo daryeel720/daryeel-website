@@ -8,6 +8,13 @@ import { mainNav } from "@/lib/site-data";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [openMobileSections, setOpenMobileSections] = useState<string[]>([]);
+
+  function toggleMobileSection(label: string) {
+    setOpenMobileSections((prev) =>
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+    );
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-blue">
@@ -99,37 +106,60 @@ export default function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-white lg:hidden">
+        <div className="max-h-[calc(100vh-64px)] overflow-y-auto border-t border-white/10 bg-blue lg:hidden">
           <nav className="mx-auto max-w-7xl px-5 py-3">
-            {mainNav.map((item) => (
-              <div key={item.label} className="border-b border-navy/5 py-2 last:border-0">
-                <Link
-                  href={item.href}
-                  className="block py-1.5 text-base font-bold text-navy"
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </Link>
-                {item.children && (
-                  <div className="ml-3 flex flex-col">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="py-1.5 text-sm text-ink/70"
-                        onClick={() => setOpen(false)}
+            {mainNav.map((item) => {
+              const isSectionOpen = openMobileSections.includes(item.label);
+              return (
+                <div key={item.label} className="border-b border-white/10 py-1 last:border-0">
+                  {item.children ? (
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between py-2.5 text-left text-base font-bold text-white"
+                      onClick={() => toggleMobileSection(item.label)}
+                      aria-expanded={isSectionOpen}
+                    >
+                      {item.label}
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        aria-hidden="true"
+                        className={`shrink-0 transition-transform ${isSectionOpen ? "rotate-45" : ""}`}
                       >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-            <div className="mt-3 flex flex-col gap-2">
+                        <path d="M7 1v12M1 7h12" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="block py-2.5 text-base font-bold text-white"
+                      onClick={() => setOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                  {item.children && isSectionOpen && (
+                    <div className="ml-3 flex flex-col pb-2">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="py-2 text-sm text-white/75"
+                          onClick={() => setOpen(false)}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            <div className="mt-3 flex flex-col gap-2 pb-3">
               <Link
                 href="/become-a-member"
-                className="rounded-md border border-navy px-4 py-2 text-center text-sm font-bold text-navy"
+                className="rounded-md border border-white px-4 py-2 text-center text-sm font-bold text-white"
                 onClick={() => setOpen(false)}
               >
                 Become a Member
