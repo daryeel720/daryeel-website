@@ -120,6 +120,26 @@ h1, h2, h3, h4 {
   animation: icon-pulse 3s ease-in-out infinite;
 }
 
+@keyframes panel-color-cycle-dark {
+  0%, 45% { background-color: #205424; }
+  50%, 95% { background-color: #14366b; }
+  100% { background-color: #205424; }
+}
+
+.animate-panel-cycle-dark {
+  animation: panel-color-cycle-dark 6s ease-in-out infinite;
+}
+
+@keyframes panel-color-cycle-light {
+  0%, 45% { background-color: #ffffff; }
+  50%, 95% { background-color: #f5f6f1; }
+  100% { background-color: #ffffff; }
+}
+
+.animate-panel-cycle-light {
+  animation: panel-color-cycle-light 6s ease-in-out infinite;
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
