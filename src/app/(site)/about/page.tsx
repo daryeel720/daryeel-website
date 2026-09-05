@@ -19,6 +19,8 @@ const defaultVisionImage =
 const defaultMissionImage =
   "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=900&auto=format&fit=crop";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = { title: "About Us" };
 
 export default async function AboutPage() {

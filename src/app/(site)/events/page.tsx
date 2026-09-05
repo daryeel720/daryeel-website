@@ -3,6 +3,8 @@ import PageHero from "@/components/PageHero";
 import { safeFetch } from "@/sanity/lib/client";
 import { eventsQuery } from "@/sanity/lib/queries";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = { title: "Events" };
 
 type SanityEvent = {

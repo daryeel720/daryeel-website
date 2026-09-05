@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import Link from "next/link";
 import HeroSlider, { type Slide } from "@/components/HeroSlider";
 import PhotoCarousel from "@/components/PhotoCarousel";

@@ -4,6 +4,8 @@ import PageHero from "@/components/PageHero";
 import { safeFetch } from "@/sanity/lib/client";
 import { newsPostsQuery } from "@/sanity/lib/queries";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = { title: "News" };
 
 type SanityNewsPost = {
