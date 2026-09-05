@@ -1,24 +1,89 @@
 import Link from "next/link";
-import HeroSlider from "@/components/HeroSlider";
+import HeroSlider, { type Slide } from "@/components/HeroSlider";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import { programs, languages } from "@/lib/site-data";
+import { defaultHeroSlides, defaultAboutPhotos } from "@/lib/default-content";
+import { safeFetch } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import {
+  heroSlidesQuery,
+  aboutPageQuery,
+  eventsQuery,
+  newsPostsQuery,
+} from "@/sanity/lib/queries";
 
-const aboutPhotos = [
-  {
-    src: "https://images.unsplash.com/photo-1529209076408-5a115ec9f1c6?q=80&w=900&auto=format&fit=crop",
-    alt: "Community members gathered together at a group learning session",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1721309688736-db2669a282f7?q=80&w=900&auto=format&fit=crop",
-    alt: "Two seniors walking together outdoors",
-  },
-];
+type SanityHeroSlide = {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  image?: Parameters<typeof urlFor>[0];
+};
 
-export default function Home() {
+type SanityAboutPage = {
+  images?: { asset?: unknown; alt?: string }[];
+};
+
+type SanityEvent = {
+  _id: string;
+  title: string;
+  date?: string;
+  location?: string;
+};
+
+type SanityNewsPost = {
+  _id: string;
+  title: string;
+  category?: string;
+  summary?: string;
+};
+
+function formatEventDate(iso?: string) {
+  if (!iso) return "Date to be announced";
+  return new Date(iso).toLocaleDateString("en-CA", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export default async function Home() {
+  const [sanitySlides, sanityAbout, sanityEvents, sanityNews] =
+    await Promise.all([
+      safeFetch<SanityHeroSlide[]>(heroSlidesQuery),
+      safeFetch<SanityAboutPage>(aboutPageQuery),
+      safeFetch<SanityEvent[]>(eventsQuery),
+      safeFetch<SanityNewsPost[]>(newsPostsQuery),
+    ]);
+
+  const heroSlides: Slide[] =
+    sanitySlides && sanitySlides.length > 0
+      ? sanitySlides.map((s) => ({
+          eyebrow: s.eyebrow,
+          title: s.title,
+          description: s.description,
+          ctaLabel: s.ctaLabel,
+          ctaHref: s.ctaHref,
+          imageUrl: s.image ? urlFor(s.image).width(1600).url() : undefined,
+        }))
+      : defaultHeroSlides;
+
+  const aboutPhotos =
+    sanityAbout?.images && sanityAbout.images.length > 0
+      ? sanityAbout.images.map((img) => ({
+          src: urlFor(img).width(900).url(),
+          alt: img.alt || "Daryeel community photo",
+        }))
+      : defaultAboutPhotos;
+
+  const upcomingEvents = sanityEvents && sanityEvents.length > 0 ? sanityEvents : null;
+  const latestNews = sanityNews && sanityNews.length > 0 ? sanityNews.slice(0, 2) : null;
+
   return (
     <div className="snap-y snap-proximity">
       <div className="snap-start">
-        <HeroSlider />
+        <HeroSlider slides={heroSlides} />
       </div>
 
       {/* About preview */}
@@ -147,21 +212,26 @@ export default function Home() {
               </Link>
             </div>
             <div className="mt-6 flex flex-col divide-y divide-navy/10 rounded-lg border border-navy/10">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center justify-between gap-3 p-5">
-                  <div>
-                    <p className="font-display text-base font-semibold text-navy">
-                      [Event name to be added]
-                    </p>
-                    <p className="text-sm text-ink/60">
-                      [Date] &middot; [Location]
-                    </p>
+              {(upcomingEvents ?? [1, 2, 3]).map((item, i) => {
+                const event = typeof item === "object" ? (item as SanityEvent) : null;
+                return (
+                  <div key={event?._id ?? i} className="flex items-center justify-between gap-3 p-5">
+                    <div>
+                      <p className="font-display text-base font-semibold text-navy">
+                        {event ? event.title : "[Event name to be added]"}
+                      </p>
+                      <p className="text-sm text-ink/60">
+                        {event
+                          ? `${formatEventDate(event.date)}${event.location ? ` · ${event.location}` : ""}`
+                          : "[Date] · [Location]"}
+                      </p>
+                    </div>
+                    <span className="w-fit shrink-0 rounded-full bg-paper px-3 py-1 text-xs font-medium text-ink/60">
+                      {event ? "Details" : "Coming soon"}
+                    </span>
                   </div>
-                  <span className="w-fit shrink-0 rounded-full bg-paper px-3 py-1 text-xs font-medium text-ink/60">
-                    Coming soon
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <Link
               href="/events"
@@ -189,19 +259,22 @@ export default function Home() {
               </Link>
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {[1, 2].map((i) => (
-                <div key={i} className="rounded-lg border border-navy/10 p-5">
-                  <p className="text-xs font-medium text-forest">
-                    [Category]
-                  </p>
-                  <p className="mt-2 font-display text-base font-semibold text-navy">
-                    [Article title to be added]
-                  </p>
-                  <p className="mt-2 text-sm text-ink/60">
-                    [Short summary to be added.]
-                  </p>
-                </div>
-              ))}
+              {(latestNews ?? [1, 2]).map((item, i) => {
+                const post = typeof item === "object" ? (item as SanityNewsPost) : null;
+                return (
+                  <div key={post?._id ?? i} className="rounded-lg border border-navy/10 p-5">
+                    <p className="text-xs font-medium text-forest">
+                      {post ? post.category || "News" : "[Category]"}
+                    </p>
+                    <p className="mt-2 font-display text-base font-semibold text-navy">
+                      {post ? post.title : "[Article title to be added]"}
+                    </p>
+                    <p className="mt-2 text-sm text-ink/60">
+                      {post ? post.summary : "[Short summary to be added.]"}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
             <Link
               href="/news"

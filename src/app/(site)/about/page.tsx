@@ -2,21 +2,27 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import { values, contact, languages, programs } from "@/lib/site-data";
+import { defaultAboutPhotos } from "@/lib/default-content";
+import { safeFetch } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import { aboutPageQuery } from "@/sanity/lib/queries";
 
-const aboutPhotos = [
-  {
-    src: "https://images.unsplash.com/photo-1529209076408-5a115ec9f1c6?q=80&w=1200&auto=format&fit=crop",
-    alt: "Community members gathered together at a group learning session",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1721309688736-db2669a282f7?q=80&w=1200&auto=format&fit=crop",
-    alt: "Two seniors walking together outdoors",
-  },
-];
+type SanityAboutPage = {
+  images?: { asset?: unknown; alt?: string }[];
+};
 
 export const metadata: Metadata = { title: "About Us" };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const sanityAbout = await safeFetch<SanityAboutPage>(aboutPageQuery);
+  const aboutPhotos =
+    sanityAbout?.images && sanityAbout.images.length > 0
+      ? sanityAbout.images.map((img) => ({
+          src: urlFor(img).width(1200).url(),
+          alt: img.alt || "Daryeel community photo",
+        }))
+      : defaultAboutPhotos;
+
   return (
     <>
       <PageHero
@@ -93,32 +99,32 @@ export default function AboutPage() {
         </div>
 
         <div className="mt-14 flex flex-col gap-6">
-          <div className="animate-fade-in-up rounded-xl bg-forest-dark p-8 text-white">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-icon-pulse">
+          <div className="animate-fade-in-up rounded-xl bg-forest-dark p-6 text-white md:p-8">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-icon-pulse h-7 w-7 md:h-10 md:w-10">
               <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8.9.8 1.5v.1h5.4v-.1c0-.6.3-1.1.8-1.5A6 6 0 0 0 12 3Z" stroke="#ffffffdd" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <h2 className="animate-text-shimmer mt-3 font-display text-3xl font-semibold md:text-4xl">
+            <h2 className="animate-text-shimmer mt-2 font-display text-xl font-semibold md:mt-3 md:text-4xl">
               Vision
             </h2>
-            <p className="mt-3 max-w-[80ch] text-xl text-white/85">
+            <p className="mt-2 max-w-[80ch] text-sm text-white/85 md:mt-3 md:text-xl">
               Empowered, connected, and inclusive communities where
               everyone has the opportunity to belong, thrive, and
               contribute through equity, compassion, and collaboration.
             </p>
           </div>
           <div
-            className="animate-fade-in-up rounded-xl bg-navy p-8 text-white"
+            className="animate-fade-in-up rounded-xl bg-navy p-6 text-white md:p-8"
             style={{ animationDelay: "150ms" }}
           >
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-icon-pulse">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-icon-pulse h-7 w-7 md:h-10 md:w-10">
               <circle cx="12" cy="12" r="8" stroke="#ffffffdd" strokeWidth="1.6" />
               <circle cx="12" cy="12" r="3.2" stroke="#ffffffdd" strokeWidth="1.6" />
               <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#ffffffdd" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
-            <h2 className="animate-text-shimmer mt-3 font-display text-3xl font-semibold md:text-4xl">
+            <h2 className="animate-text-shimmer mt-2 font-display text-xl font-semibold md:mt-3 md:text-4xl">
               Mission
             </h2>
-            <p className="mt-3 max-w-[80ch] text-xl text-white/85">
+            <p className="mt-2 max-w-[80ch] text-sm text-white/85 md:mt-3 md:text-xl">
               Daryeel Community &amp; Senior Centre is committed to
               empowering seniors, youth, families, newcomers, and other
               vulnerable communities through inclusive programs, advocacy,
