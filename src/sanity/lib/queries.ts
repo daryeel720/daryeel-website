@@ -10,7 +10,9 @@ export const heroSlidesQuery = `*[_type == "heroSlide"] | order(order asc) {
 
 export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   introText,
-  images
+  images,
+  visionImage,
+  missionImage
 }`;
 
 export const programsQuery = `*[_type == "program"] | order(order asc) {

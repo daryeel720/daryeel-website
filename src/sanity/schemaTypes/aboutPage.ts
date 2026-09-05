@@ -38,6 +38,20 @@ export default defineType({
       validation: (Rule) => Rule.max(2),
       description: "Add up to 2 photos — they will fade between each other.",
     }),
+    defineField({
+      name: "visionImage",
+      title: "Vision Section Photo",
+      type: "image",
+      options: { hotspot: true },
+      description: "Shown at the top of the green Vision card.",
+    }),
+    defineField({
+      name: "missionImage",
+      title: "Mission Section Photo",
+      type: "image",
+      options: { hotspot: true },
+      description: "Shown at the top of the white Mission card.",
+    }),
   ],
   preview: {
     select: { media: "images.0" },

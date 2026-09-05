@@ -10,7 +10,14 @@ import { aboutPageQuery } from "@/sanity/lib/queries";
 
 type SanityAboutPage = {
   images?: { asset?: unknown; alt?: string }[];
+  visionImage?: Parameters<typeof urlFor>[0];
+  missionImage?: Parameters<typeof urlFor>[0];
 };
+
+const defaultVisionImage =
+  "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=900&auto=format&fit=crop";
+const defaultMissionImage =
+  "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=900&auto=format&fit=crop";
 
 export const metadata: Metadata = { title: "About Us" };
 
@@ -23,6 +30,13 @@ export default async function AboutPage() {
           alt: img.alt || "Daryeel community photo",
         }))
       : defaultAboutPhotos;
+
+  const visionImageUrl = sanityAbout?.visionImage
+    ? urlFor(sanityAbout.visionImage).width(900).url()
+    : defaultVisionImage;
+  const missionImageUrl = sanityAbout?.missionImage
+    ? urlFor(sanityAbout.missionImage).width(900).url()
+    : defaultMissionImage;
 
   return (
     <>
@@ -103,7 +117,7 @@ export default async function AboutPage() {
           <div className="animate-fade-in-up overflow-hidden rounded-xl text-white">
             <div className="relative aspect-[16/10]">
               <Image
-                src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=900&auto=format&fit=crop"
+                src={visionImageUrl}
                 alt=""
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -131,7 +145,7 @@ export default async function AboutPage() {
           >
             <div className="relative aspect-[16/10]">
               <Image
-                src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=900&auto=format&fit=crop"
+                src={missionImageUrl}
                 alt=""
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
