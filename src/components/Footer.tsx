@@ -15,12 +15,12 @@ function FooterCol({
       <h3 className="font-display text-sm font-semibold text-white">
         {title}
       </h3>
-      <ul className="mt-4 flex flex-col gap-2.5">
+      <ul className="mt-3 flex flex-col gap-1.5">
         {links.map((l) => (
           <li key={l.href}>
             <Link
               href={l.href}
-              className="text-sm text-white/70 transition hover:text-white"
+              className="text-sm leading-tight text-white/70 transition hover:text-white"
             >
               {l.label}
             </Link>
@@ -71,7 +71,7 @@ function FooterAccordion({
 function ContactBlock() {
   return (
     <>
-      <ul className="mt-4 flex flex-col gap-2.5 text-sm text-white/70">
+      <ul className="mt-3 flex flex-col gap-1.5 text-sm text-white/70">
         <li>{contact.addressLine1}</li>
         <li>{contact.addressLine2}</li>
         <li>
@@ -85,7 +85,7 @@ function ContactBlock() {
           </a>
         </li>
       </ul>
-      <div className="mt-5 flex gap-2.5">
+      <div className="mt-4 flex gap-2.5">
         <a
           href={contact.socials.facebook}
           aria-label="Daryeel on Facebook"
@@ -122,15 +122,15 @@ function ContactBlock() {
 export default function Footer() {
   return (
     <footer className="bg-navy-dark text-white">
-      <div className="mx-auto max-w-7xl px-5 py-10 md:py-14">
+      <div className="mx-auto max-w-7xl px-5 py-8 md:py-10">
         <Image
           src="/images/logo.png"
           alt="Daryeel Community & Senior Centre"
           width={64}
           height={64}
-          className="h-16 w-16"
+          className="h-16 w-16 md:h-12 md:w-12"
         />
-        <p className="mt-3 max-w-[28ch] text-sm italic text-white/60">
+        <p className="mt-3 max-w-[28ch] text-sm italic text-white/60 md:mt-2">
           Building stronger, healthier communities together.
         </p>
 
@@ -149,7 +149,7 @@ export default function Footer() {
         </div>
 
         {/* Desktop: full columns */}
-        <div className="mt-10 hidden grid-cols-5 gap-10 md:grid">
+        <div className="mt-6 hidden grid-cols-5 gap-8 md:grid">
           <FooterCol title="Programs" links={footerLinks.programs} />
           <FooterCol title="Get Involved" links={footerLinks.getInvolved} />
           <FooterCol title="Organization" links={footerLinks.organization} />
@@ -162,7 +162,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6">
+        <div className="mt-6 border-t border-white/10 pt-4 md:mt-8">
           <p className="text-xs text-white/50">
             &copy; {new Date().getFullYear()} Daryeel Community &amp; Senior
             Centre. All rights reserved.
